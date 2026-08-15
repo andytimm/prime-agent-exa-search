@@ -22,13 +22,13 @@ def test_format_results():
 
 
 def test_missing_key(monkeypatch):
-    monkeypatch.delenv("EXA_API_KEY", raising=False)
+    monkeypatch.setattr(exa_search, "get_api_key", lambda: None)
     with pytest.raises(RuntimeError, match="EXA_API_KEY"):
         asyncio.run(exa_search.run("test"))
 
 
 def test_validates_input(monkeypatch):
-    monkeypatch.setenv("EXA_API_KEY", "secret")
+    monkeypatch.setattr(exa_search, "get_api_key", lambda: "secret")
     with pytest.raises(ValueError, match="empty"):
         asyncio.run(exa_search.run("  "))
     with pytest.raises(ValueError, match="between 1 and 20"):
@@ -36,7 +36,7 @@ def test_validates_input(monkeypatch):
 
 
 def test_search_request(monkeypatch):
-    monkeypatch.setenv("EXA_API_KEY", "secret")
+    monkeypatch.setattr(exa_search, "get_api_key", lambda: "secret")
 
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.headers["x-api-key"] == "secret"

@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-import os
 from typing import Any
 
 import httpx
+
+from .credentials import get_api_key
 
 _API_URL = "https://api.exa.ai/search"
 
@@ -57,10 +58,11 @@ async def run(query: str, max_results: int = 5) -> str:
     if not 1 <= max_results <= 20:
         raise ValueError("max_results must be between 1 and 20")
 
-    api_key = os.environ.get("EXA_API_KEY", "").strip()
+    api_key = get_api_key()
     if not api_key:
         raise RuntimeError(
-            "EXA_API_KEY is not set. Export it before starting Prime Agent, then restart the session."
+            "No Exa API key is configured. Run `exa_search_auth login` in a terminal "
+            "or set EXA_API_KEY."
         )
 
     headers = {"x-api-key": api_key, "content-type": "application/json"}

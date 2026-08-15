@@ -2,22 +2,39 @@
 
 A minimal Python-backed [Prime Agent](https://github.com/PrimeIntellect-ai/prime-agent) skill for Exa web search.
 
-## Install for Prime Agent
+## Install
+
+```sh
+git clone https://github.com/andytimm/prime-agent-exa-search.git ~/code/prime-agent-exa-search
+```
 
 Add the skill directory to `skills` in `~/.prime/agent/settings.json`:
 
 ```json
 {
-  "skills": ["/Users/you/code/prime-agent-exa-search/skills/exa-search"]
+  "skills": ["~/code/prime-agent-exa-search/skills/exa-search"]
 }
 ```
 
-Then export your Exa key and restart Prime Agent:
+## Secure login
+
+Store the API key in your operating system's credential store. Input is masked and never enters shell history or an agent conversation:
 
 ```sh
-export EXA_API_KEY="..."
-prime-agent
+cd ~/code/prime-agent-exa-search
+uv run --project skills/exa-search exa_search_auth login
 ```
+
+On macOS this uses Keychain. The Python `keyring` package uses the corresponding credential service on other supported operating systems.
+
+```sh
+uv run --project skills/exa-search exa_search_auth status
+uv run --project skills/exa-search exa_search_auth logout
+```
+
+`EXA_API_KEY` remains available as an optional override for CI and secret-manager workflows. Restart Prime Agent after initially installing the skill; changing the Keychain value does not require restarting it.
+
+## Usage
 
 Prime Agent auto-imports the skill as `exa_search`:
 
