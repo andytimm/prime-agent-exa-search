@@ -1,6 +1,6 @@
 # Prime Agent Exa Search
 
-A Python-backed [Prime Agent](https://github.com/PrimeIntellect-ai/prime-agent) skill for searching and reading the public web with [Exa](https://exa.ai/).
+A minimal Python-backed [Prime Agent](https://github.com/PrimeIntellect-ai/prime-agent) skill for searching and reading the public web with [Exa](https://exa.ai/).
 
 ## What is included
 
